@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import android.widget.Button
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -15,11 +16,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val viewPager2: ViewPager2 = findViewById(R.id.viewPager2)
-        val btnNext: Button = findViewById(R.id.btnDislike)
+        val btnDislike: Button = findViewById(R.id.btnDislike)
+        val btnMeLike: Button = findViewById(R.id.btnMeLike)
+        val btnMisLikes: Button = findViewById(R.id.btnMisLikes)
 
-        // Datos de las cafeterías
+
         val cafes = listOf(
-            Cafe(
+            Cafeteria(
                 listOf(
                     R.drawable.cafecafeto1,
                     R.drawable.cafecafeto2,
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 ),
                 "Cafetería Cafeto"
             ),
-            Cafe(
+            Cafeteria(
                 listOf(
                     R.drawable.cafealtotostado1,
                     R.drawable.cafealtotostado2,
@@ -39,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                 ),
                 "Cafetería Alto Tostado"
             ),
-            Cafe(
+            Cafeteria(
                 listOf(
                     R.drawable.cafedelbarrio1,
                     R.drawable.cafedelbarrio2,
@@ -49,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                 ),
                 "Cafetería del Barrio"
             ),
-            Cafe(
+            Cafeteria(
                 listOf(
                     R.drawable.cafedoblechocolate1,
                     R.drawable.cafedoblechocolate2,
@@ -59,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 ),
                 "Cafetería Doble Chocolate"
             ),
-            Cafe(
+            Cafeteria(
                 listOf(
                     R.drawable.cafetypica1,
                     R.drawable.cafetypica2,
@@ -71,19 +74,20 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        // Variable para rastrear el índice actual de la cafetería
-        var currentIndex = 0
+        // Identifica la cafetería actual
+        var FotoActual = 0
 
-        // Configura el ViewPagerAdapter inicialmente
-        viewPager2.adapter = ViewPagerAdapter(cafes[currentIndex].images, cafes[currentIndex].name)
+        // Configura el ViewPagerAdapter inicialmente para la primera cafetería
+        viewPager2.adapter = ViewPagerAdapter(cafes[FotoActual].images, cafes[FotoActual].name)
 
-        btnNext.setOnClickListener {
-            // Cambia a la siguiente cafetería
-            currentIndex = (currentIndex + 1) % cafes.size
-            viewPager2.adapter = ViewPagerAdapter(cafes[currentIndex].images, cafes[currentIndex].name)
+        btnDislike.setOnClickListener {
+            FotoActual = (FotoActual + 1) % cafes.size
+            viewPager2.adapter = ViewPagerAdapter(cafes[FotoActual].images, cafes[FotoActual].name)
+        }
+        btnMeLike.setOnClickListener {
+            FotoActual = (FotoActual + 1) % cafes.size
+            viewPager2.adapter = ViewPagerAdapter(cafes[FotoActual].images, cafes[FotoActual].name)
+            Toast.makeText(this, "Cafetería Guardada", Toast.LENGTH_SHORT).show()
         }
     }
-
-    // Clase de datos para representar cada cafetería
-    data class Cafe(val images: List<Int>, val name: String)
 }
