@@ -1,4 +1,4 @@
-package com.example.practico3viewpager
+import com.example.practico3viewpager.R
 
 import android.view.LayoutInflater
 import android.view.View

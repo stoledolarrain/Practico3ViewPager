@@ -1,6 +1,8 @@
 package com.example.practico3viewpager
 
+import ViewPagerAdapter
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         val btnDislike: Button = findViewById(R.id.btnDislike)
         val btnMeLike: Button = findViewById(R.id.btnMeLike)
         val btnMisLikes: Button = findViewById(R.id.btnMisLikes)
-
 
         val cafes = listOf(
             Cafeteria(
@@ -74,7 +75,10 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        // Identifica la cafetería actual
+        // Lista para guardar los nombres de las cafeterías "gustadas"
+        val listaDeCafeteriasGuardadas = mutableListOf<String>()
+
+
         var FotoActual = 0
 
         // Configura el ViewPagerAdapter inicialmente para la primera cafetería
@@ -84,10 +88,21 @@ class MainActivity : AppCompatActivity() {
             FotoActual = (FotoActual + 1) % cafes.size
             viewPager2.adapter = ViewPagerAdapter(cafes[FotoActual].images, cafes[FotoActual].name)
         }
+
         btnMeLike.setOnClickListener {
+            // Añadir el nombre de la cafetería a la lista de gustos
+            listaDeCafeteriasGuardadas.add(cafes[FotoActual].name)
+
+            // Cambiar a la siguiente cafetería
             FotoActual = (FotoActual + 1) % cafes.size
             viewPager2.adapter = ViewPagerAdapter(cafes[FotoActual].images, cafes[FotoActual].name)
             Toast.makeText(this, "Cafetería Guardada", Toast.LENGTH_SHORT).show()
+        }
+
+        btnMisLikes.setOnClickListener {
+            val intent = Intent(this, MisLikesActivity::class.java)
+            intent.putStringArrayListExtra("Cafeterías Guardadas.", ArrayList(listaDeCafeteriasGuardadas))
+            startActivity(intent)
         }
     }
 }
